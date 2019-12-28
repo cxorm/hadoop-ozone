@@ -59,6 +59,8 @@ import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.ListKey
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.ListKeysResponse;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.ListTrashRequest;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.ListTrashResponse;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.RecoverTrashRequest;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.RecoverTrashResponse;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.ListVolumeRequest;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.ListVolumeResponse;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.LookupKeyRequest;
@@ -154,6 +156,11 @@ public class OzoneManagerRequestHandler implements RequestHandler {
         ListTrashResponse listTrashResponse = listTrash(
             request.getListTrashRequest());
         responseBuilder.setListTrashResponse(listTrashResponse);
+        break;
+      case RecoverTrash:
+        RecoverTrashResponse recoverTrashResponse = recoverTrash(
+            request.getRecoverTrashRequest());
+        responseBuilder.setRecoverTrashResponse(recoverTrashResponse);
         break;
       case InfoS3Bucket:
         S3BucketInfoResponse s3BucketInfoResponse = getS3Bucketinfo(
@@ -424,6 +431,21 @@ public class OzoneManagerRequestHandler implements RequestHandler {
     }
 
     return resp.build();
+  }
+
+  private RecoverTrashResponse recoverTrash(RecoverTrashRequest request)
+      throws IOException {
+
+    RecoverTrashResponse.Builder resp =
+        RecoverTrashResponse.newBuilder();
+
+    boolean recoverKeys = impl.recoverTrash(
+        request.getVolumeName(),
+        request.getBucketName(),
+        request.getKeyName(),
+        request.getDestinationBucket());
+
+    return resp.setResponse(recoverKeys).build();
   }
 
   private AllocateBlockResponse allocateBlock(AllocateBlockRequest request)
