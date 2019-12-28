@@ -805,6 +805,16 @@ public class OmMetadataManagerImpl implements OMMetadataManager {
   }
 
   @Override
+  public boolean recoverTrash(String volumeName, String bucketName,
+      String keyName, String destinationBucket) throws IOException {
+
+    // TODO: core logic stub would be added in later patch.
+
+    boolean recoverOperation = true;
+    return recoverOperation;
+  }
+
+  @Override
   public List<OmVolumeArgs> listVolumes(String userName,
       String prefix, String startKey, int maxKeys) throws IOException {
     List<OmVolumeArgs> result = Lists.newArrayList();
