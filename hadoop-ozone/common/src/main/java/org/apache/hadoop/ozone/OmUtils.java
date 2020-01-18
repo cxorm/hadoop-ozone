@@ -205,7 +205,6 @@ public final class OmUtils {
     case LookupKey:
     case ListKeys:
     case ListTrash:
-    case RecoverTrash:
     case InfoS3Bucket:
     case ListS3Buckets:
     case ServiceList:
@@ -244,6 +243,7 @@ public final class OmUtils {
     case SetAcl:
     case AddAcl:
     case PurgeKeys:
+    case RecoverTrash:
       return false;
     default:
       LOG.error("CmdType {} is not categorized as readOnly or not.", cmdType);

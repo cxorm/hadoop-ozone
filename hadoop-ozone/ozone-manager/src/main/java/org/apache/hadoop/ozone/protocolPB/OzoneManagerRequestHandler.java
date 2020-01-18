@@ -157,11 +157,6 @@ public class OzoneManagerRequestHandler implements RequestHandler {
             request.getListTrashRequest());
         responseBuilder.setListTrashResponse(listTrashResponse);
         break;
-      case RecoverTrash:
-        RecoverTrashResponse recoverTrashResponse = recoverTrash(
-            request.getRecoverTrashRequest());
-        responseBuilder.setRecoverTrashResponse(recoverTrashResponse);
-        break;
       case InfoS3Bucket:
         S3BucketInfoResponse s3BucketInfoResponse = getS3Bucketinfo(
             request.getInfoS3BucketRequest());
