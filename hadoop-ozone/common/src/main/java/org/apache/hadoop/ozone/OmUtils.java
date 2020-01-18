@@ -487,4 +487,15 @@ public final class OmUtils {
 
     return repeatedOmKeyInfo;
   }
+
+  public static OmKeyInfo prepareKeyForRecover(OmKeyInfo keyInfo,
+      RepeatedOmKeyInfo repeatedOmKeyInfo) {
+
+    /* TODO: HDDS-2425. HDDS-2426.*/
+    if (repeatedOmKeyInfo.getOmKeyInfoList().contains(keyInfo)) {
+      return keyInfo;
+    } else {
+      return null;
+    }
+  }
 }
