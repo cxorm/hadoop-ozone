@@ -69,6 +69,10 @@ public class OzoneVolume extends WithMetadata {
    */
   private Instant creationTime;
   /**
+   * Modification time of the volume.
+   */
+  private Instant modificationTime;
+  /**
    * Volume ACLs.
    */
   private List<OzoneAcl> acls;
@@ -84,14 +88,15 @@ public class OzoneVolume extends WithMetadata {
    * @param owner Volume owner.
    * @param quotaInBytes Volume quota in bytes.
    * @param creationTime creation time of the volume
+   * @param modificationTime modification time of the volume.
    * @param acls ACLs associated with the volume.
    * @param metadata custom key value metadata.
    */
   @SuppressWarnings("parameternumber")
   public OzoneVolume(Configuration conf, ClientProtocol proxy, String name,
                      String admin, String owner, long quotaInBytes,
-                     long creationTime, List<OzoneAcl> acls,
-                     Map<String, String> metadata) {
+                     long creationTime, long modificationTime,
+                     List<OzoneAcl> acls, Map<String, String> metadata) {
     Preconditions.checkNotNull(proxy, "Client proxy is not set.");
     this.proxy = proxy;
     this.name = name;
@@ -99,6 +104,7 @@ public class OzoneVolume extends WithMetadata {
     this.owner = owner;
     this.quotaInBytes = quotaInBytes;
     this.creationTime = Instant.ofEpochMilli(creationTime);
+    this.modificationTime = Instant.ofEpochMilli(modificationTime);
     this.acls = acls;
     this.listCacheSize = HddsClientUtils.getListCacheSize(conf);
     this.metadata = metadata;
@@ -107,21 +113,23 @@ public class OzoneVolume extends WithMetadata {
   @SuppressWarnings("parameternumber")
   public OzoneVolume(Configuration conf, ClientProtocol proxy, String name,
                      String admin, String owner, long quotaInBytes,
-                     long creationTime, List<OzoneAcl> acls) {
-    this(conf, proxy, name, admin, owner, quotaInBytes, creationTime, acls,
-        new HashMap<>());
+                     long creationTime, long modificationTime,
+                     List<OzoneAcl> acls) {
+    this(conf, proxy, name, admin, owner, quotaInBytes,
+        creationTime, modificationTime, acls, new HashMap<>());
   }
 
   @VisibleForTesting
   protected OzoneVolume(String name, String admin, String owner,
-      long quotaInBytes,
-      long creationTime, List<OzoneAcl> acls) {
+      long quotaInBytes, long creationTime,
+      long modificationTime, List<OzoneAcl> acls) {
     this.proxy = null;
     this.name = name;
     this.admin = admin;
     this.owner = owner;
     this.quotaInBytes = quotaInBytes;
     this.creationTime = Instant.ofEpochMilli(creationTime);
+    this.modificationTime = Instant.ofEpochMilli(modificationTime);
     this.acls = acls;
     this.metadata = new HashMap<>();
   }
@@ -169,6 +177,15 @@ public class OzoneVolume extends WithMetadata {
    */
   public Instant getCreationTime() {
     return creationTime;
+  }
+
+  /**
+   * Returns modification time of the volume.
+   *
+   * @return modification time.
+   */
+  public Instant getModificationTime() {
+    return modificationTime;
   }
 
   /**

@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.hadoop.ozone.om.exceptions.OMException;
+import org.apache.hadoop.util.Time;
 
 import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.BUCKET_ALREADY_EXISTS;
 import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.BUCKET_NOT_EMPTY;
@@ -62,12 +63,14 @@ public class ObjectStoreStub extends ObjectStore {
   @Override
   public void createVolume(String volumeName, VolumeArgs volumeArgs)
       throws IOException {
+    long initialTime = Time.now();
     OzoneVolumeStub volume =
         new OzoneVolumeStub(volumeName,
             volumeArgs.getAdmin(),
             volumeArgs.getOwner(),
             Long.parseLong(volumeArgs.getQuota()),
-            System.currentTimeMillis(),
+            initialTime,
+            initialTime,
             volumeArgs.getAcls());
     volumes.put(volumeName, volume);
   }

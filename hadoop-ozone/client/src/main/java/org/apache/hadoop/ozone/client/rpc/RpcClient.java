@@ -328,6 +328,7 @@ public class RpcClient implements ClientProtocol {
         volume.getOwnerName(),
         volume.getQuotaInBytes(),
         volume.getCreationTime(),
+        volume.getModificationTime(),
         volume.getAclMap().ozoneAclGetProtobuf().stream().
             map(OzoneAcl::fromProtobuf).collect(Collectors.toList()),
         volume.getMetadata());
@@ -360,6 +361,7 @@ public class RpcClient implements ClientProtocol {
         volume.getOwnerName(),
         volume.getQuotaInBytes(),
         volume.getCreationTime(),
+        volume.getModificationTime(),
         volume.getAclMap().ozoneAclGetProtobuf().stream().
             map(OzoneAcl::fromProtobuf).collect(Collectors.toList())))
         .collect(Collectors.toList());
@@ -380,6 +382,7 @@ public class RpcClient implements ClientProtocol {
         volume.getOwnerName(),
         volume.getQuotaInBytes(),
         volume.getCreationTime(),
+        volume.getModificationTime(),
         volume.getAclMap().ozoneAclGetProtobuf().stream().
             map(OzoneAcl::fromProtobuf).collect(Collectors.toList()),
         volume.getMetadata()))
@@ -570,6 +573,7 @@ public class RpcClient implements ClientProtocol {
         bucketInfo.getStorageType(),
         bucketInfo.getIsVersionEnabled(),
         bucketInfo.getCreationTime(),
+        bucketInfo.getModificationTime(),
         bucketInfo.getMetadata(),
         bucketInfo.getEncryptionKeyInfo() != null ? bucketInfo
             .getEncryptionKeyInfo().getKeyName() : null);
@@ -590,6 +594,7 @@ public class RpcClient implements ClientProtocol {
         bucket.getStorageType(),
         bucket.getIsVersionEnabled(),
         bucket.getCreationTime(),
+        bucket.getModificationTime(),
         bucket.getMetadata(),
         bucket.getEncryptionKeyInfo() != null ? bucket
             .getEncryptionKeyInfo().getKeyName() : null))
@@ -812,6 +817,7 @@ public class RpcClient implements ClientProtocol {
         bucket.getStorageType(),
         bucket.getIsVersionEnabled(),
         bucket.getCreationTime(),
+        bucket.getModificationTime(),
         bucket.getMetadata(),
         bucket.getEncryptionKeyInfo() != null ?
             bucket.getEncryptionKeyInfo().getKeyName(): null))
