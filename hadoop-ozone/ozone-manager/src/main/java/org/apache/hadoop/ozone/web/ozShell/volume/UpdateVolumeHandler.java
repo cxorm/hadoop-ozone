@@ -57,11 +57,9 @@ public class UpdateVolumeHandler extends VolumeHandler {
 
     if (ownerName != null && !ownerName.isEmpty()) {
       volume.setOwner(ownerName);
-      // For printing newer modificationTime.
-      OzoneVolume updatedVolume = client.getObjectStore().getVolume(volumeName);
-      ObjectPrinter.printObjectAsJson(updatedVolume);
     }
-
+    // For printing newer modificationTime.
+    volume = client.getObjectStore().getVolume(volumeName);
     printObjectAsJson(volume);
   }
 }
