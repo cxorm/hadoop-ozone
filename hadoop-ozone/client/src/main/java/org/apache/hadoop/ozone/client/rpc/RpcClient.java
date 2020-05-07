@@ -427,6 +427,8 @@ public class RpcClient implements ClientProtocol {
           .setKeyName(bucketArgs.getEncryptionKey()).build();
     }
 
+    boolean trashEnabled = bucketArgs.getTrashEnabled();
+
     List<OzoneAcl> listOfAcls = getAclList();
     //ACLs from BucketArgs
     if(bucketArgs.getAcls() != null) {
@@ -439,7 +441,8 @@ public class RpcClient implements ClientProtocol {
         .setIsVersionEnabled(isVersionEnabled)
         .addAllMetadata(bucketArgs.getMetadata())
         .setStorageType(storageType)
-        .setAcls(listOfAcls.stream().distinct().collect(Collectors.toList()));
+        .setAcls(listOfAcls.stream().distinct().collect(Collectors.toList()))
+        .setTrashEnabled(trashEnabled);
 
     if (bek != null) {
       builder.setBucketEncryptionKey(bek);
@@ -610,7 +613,8 @@ public class RpcClient implements ClientProtocol {
         bucketInfo.getCreationTime(),
         bucketInfo.getMetadata(),
         bucketInfo.getEncryptionKeyInfo() != null ? bucketInfo
-            .getEncryptionKeyInfo().getKeyName() : null);
+            .getEncryptionKeyInfo().getKeyName() : null,
+        bucketInfo.getTrashEnabled());
   }
 
   @Override
@@ -630,7 +634,8 @@ public class RpcClient implements ClientProtocol {
         bucket.getCreationTime(),
         bucket.getMetadata(),
         bucket.getEncryptionKeyInfo() != null ? bucket
-            .getEncryptionKeyInfo().getKeyName() : null))
+            .getEncryptionKeyInfo().getKeyName() : null,
+        bucket.getTrashEnabled()))
         .collect(Collectors.toList());
   }
 
