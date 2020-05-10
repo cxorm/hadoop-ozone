@@ -38,6 +38,7 @@ import org.apache.hadoop.crypto.CryptoOutputStream;
 import org.apache.hadoop.crypto.key.KeyProvider;
 import org.apache.hadoop.fs.FileEncryptionInfo;
 import org.apache.hadoop.hdds.client.OzoneQuota;
+import org.apache.hadoop.hdds.client.OzoneRecoverWindow;
 import org.apache.hadoop.hdds.client.ReplicationFactor;
 import org.apache.hadoop.hdds.client.ReplicationType;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
@@ -428,6 +429,9 @@ public class RpcClient implements ClientProtocol {
     }
 
     boolean trashEnabled = bucketArgs.getTrashEnabled();
+    long recoverWindow = OzoneRecoverWindow
+        .parseWindow(bucketArgs.getRecoverWindow())
+        .lengthInSeconds();
 
     List<OzoneAcl> listOfAcls = getAclList();
     //ACLs from BucketArgs
@@ -442,7 +446,8 @@ public class RpcClient implements ClientProtocol {
         .addAllMetadata(bucketArgs.getMetadata())
         .setStorageType(storageType)
         .setAcls(listOfAcls.stream().distinct().collect(Collectors.toList()))
-        .setTrashEnabled(trashEnabled);
+        .setTrashEnabled(trashEnabled)
+        .setRecoverWindow(recoverWindow);
 
     if (bek != null) {
       builder.setBucketEncryptionKey(bek);
@@ -614,7 +619,8 @@ public class RpcClient implements ClientProtocol {
         bucketInfo.getMetadata(),
         bucketInfo.getEncryptionKeyInfo() != null ? bucketInfo
             .getEncryptionKeyInfo().getKeyName() : null,
-        bucketInfo.getTrashEnabled());
+        bucketInfo.getTrashEnabled(),
+        bucketInfo.getRecoverWindow());
   }
 
   @Override
@@ -635,7 +641,8 @@ public class RpcClient implements ClientProtocol {
         bucket.getMetadata(),
         bucket.getEncryptionKeyInfo() != null ? bucket
             .getEncryptionKeyInfo().getKeyName() : null,
-        bucket.getTrashEnabled()))
+        bucket.getTrashEnabled(),
+        bucket.getRecoverWindow()))
         .collect(Collectors.toList());
   }
 
