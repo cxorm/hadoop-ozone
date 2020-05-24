@@ -458,6 +458,17 @@ public class OzoneBucket extends WithMetadata {
     proxy.deleteKey(volumeName, name, key);
   }
 
+  /**
+   * Recovers deleted key to the destination bucket.
+   * @param deletedKey The deleted key in deleted table.
+   * @param destinationBucket The bucket under volumeName
+   *                         user want to recover to.
+   */
+  public boolean recoverTrash(String deletedKey, String destinationBucket)
+      throws IOException {
+    return proxy.recoverTrash(volumeName, name, deletedKey, destinationBucket);
+  }
+
   public void renameKey(String fromKeyName, String toKeyName)
       throws IOException {
     proxy.renameKey(volumeName, name, fromKeyName, toKeyName);
